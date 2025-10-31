@@ -1,0 +1,144 @@
+openapi: 3.1.0
+info:
+  title: Asset Vulnerability Scanner API
+  description: |
+    API documentation for Asset Vulnerability Scanner application.
+    This API allows users to authenticate and manage assets.
+
+    ## Authentication
+
+    To authenticate, use the `/api/login` endpoint to obtain a Bearer token.
+    Include this token in the `Authorization` header for protected endpoints:
+
+    ```
+    Authorization: Bearer {token}
+    ```
+  version: 1.0.0
+servers:
+  - url: /api
+    description: API Server
+tags:
+  - name: Authentication
+    description: User authentication endpoints
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and get access token
+      description: |
+        This endpoint allows users to authenticate by providing their email and password.
+        Upon successful authentication, it returns a Bearer token that can be used to access protected endpoints.
+
+        ### Usage
+
+        1. Send a POST request with your email and password
+        2. Upon success, you'll receive a Bearer token
+        3. Use this token in the `Authorization` header for subsequent requests:
+           ```
+           Authorization: Bearer {token}
+           ```
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                  description: User email address
+                password:
+                  type: string
+                  format: password
+                  example: password123
+                  description: User password
+            examples:
+              validCredentials:
+                summary: Valid credentials example
+                value:
+                  email: user@example.com
+                  password: password123
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 1|abcdef1234567890abcdef1234567890abcdef12
+                    description: Bearer token for authentication
+                  token_type:
+                    type: string
+                    example: Bearer
+                    description: Token type
+                  expires_at:
+                    type: string
+                    format: date-time
+                    example: '2025-12-31T23:59:59Z'
+                    description: Token expiration date and time in ISO 8601 format
+              examples:
+                success:
+                  summary: Successful authentication response
+                  value:
+                    token: 1|abcdef1234567890abcdef1234567890abcdef12
+                    token_type: Bearer
+                    expires_at: '2025-12-31T23:59:59Z'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The provided credentials are incorrect.
+              examples:
+                invalidCredentials:
+                  summary: Invalid credentials response
+                  value:
+                    message: The provided credentials are incorrect.
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The given data was invalid.
+                  errors:
+                    type: object
+                    description: Validation errors for each field
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+              examples:
+                validationError:
+                  summary: Validation error response
+                  value:
+                    message: The given data was invalid.
+                    errors:
+                      email:
+                        - The email field is required.
+                        - The email must be a valid email address.
+                      password:
+                        - The password field is required.
+components:
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

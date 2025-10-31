@@ -3,6 +3,7 @@ services:
     build:
       context: ./php
       dockerfile: Dockerfile
+    user: "1000:1000"
     volumes:
       - ../.:/var/www/html
     environment:
@@ -24,6 +25,8 @@ services:
       POSTGRES_DB: dev
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
+    ports:
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
