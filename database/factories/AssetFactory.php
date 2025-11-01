@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\VulnerabilitySeverityEnum;
 use App\Models\Asset;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,15 +12,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AssetFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'description' => $this->faker->text(),
+            'device_type' => $this->faker->safari(),
+            'location' => $this->faker->city(),
+            'status' => 'initial',
+            'user_id' => User::factory()
         ];
     }
 }

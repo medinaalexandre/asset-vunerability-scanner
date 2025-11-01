@@ -12,7 +12,6 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
     }
 
-
     protected function newQuery(): Builder
     {
         return $this->model->newQuery();

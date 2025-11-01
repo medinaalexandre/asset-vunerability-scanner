@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['user_id', 'name']);
+            $table->softDeletes();
         });
     }
 

@@ -6,6 +6,8 @@ use Database\Factories\AssetFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -36,6 +38,7 @@ class Asset extends Model
 {
     /** @use HasFactory<AssetFactory> */
     use HasFactory;
+    use SoftDeletes;
 
      protected $fillable = [
          'name',
@@ -45,4 +48,9 @@ class Asset extends Model
          'status',
          'user_id',
     ];
+
+     public function vulnerabilities(): BelongsToMany
+     {
+         return $this->belongsToMany(Vulnerability::class);
+     }
 }

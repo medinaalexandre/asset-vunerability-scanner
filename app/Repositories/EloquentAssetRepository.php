@@ -32,4 +32,14 @@ class EloquentAssetRepository implements AssetRepositoryInterface
 
         return $newAsset;
     }
+
+    public function find(int $id): ?Asset
+    {
+        return $this->newQuery()->where('id', $id)->first();
+    }
+
+    public function attachVulnerability(int $assetId, int $vulnerabilityId): void
+    {
+        $this->find($assetId)?->vulnerabilities()->attach($vulnerabilityId);
+    }
 }
