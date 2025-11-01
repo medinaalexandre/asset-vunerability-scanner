@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\VulnerabilityRepositoryInterface;
+use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentVulnerabilityRepository;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             VulnerabilityRepositoryInterface::class,
             EloquentVulnerabilityRepository::class
+        );
+
+        $this->app->bind(
+            AssetRepositoryInterface::class,
+            EloquentAssetRepository::class
         );
     }
 

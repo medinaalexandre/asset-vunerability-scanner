@@ -7,10 +7,10 @@ use App\Models\Asset;
 use App\Models\User;
 use App\Repositories\EloquentAssetRepository;
 
-class CreateAssetUseCase
+final readonly class CreateAssetUseCase
 {
     public function __construct(
-        protected readonly EloquentAssetRepository $repository
+        protected EloquentAssetRepository $repository
     ) {
 
     }

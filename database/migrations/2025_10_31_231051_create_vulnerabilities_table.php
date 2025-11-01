@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('vulnerabilities', static function (Blueprint $table) {
             $table->id();
-            $table->string('cve_id');
+            $table->string('cve_id')->unique();
             $table->enum('severity', VulnerabilitySeverityEnum::cases());
             $table->text('description');
             $table->timestamp('published_at');

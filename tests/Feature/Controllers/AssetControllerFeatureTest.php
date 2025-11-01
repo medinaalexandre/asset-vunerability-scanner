@@ -1,6 +1,11 @@
 <?php
 
+mutates(AssetController::class);
+
+use App\Http\Controllers\AssetController;
+use App\Models\Asset;
 use App\Models\User;
+use App\Models\Vulnerability;
 
 it('can create an asset', function () {
     $user = User::factory()->create();
@@ -13,7 +18,10 @@ it('can create an asset', function () {
         'location' => 'Santa Maria, Brazil'
     ]);
 
-    $res->assertCreated();
+    $res->assertCreated()
+        ->assertJsonStructure([
+            'id'
+        ]);
 });
 
 it('receive unauthorized if not authenticated', function () {
@@ -59,5 +67,31 @@ it('receive bad request if send invalid payload', function (array $payload, arra
 ]);
 
 it('can attach a vulnerability to an asset', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $vulnerability = Vulnerability::factory()->create();
+    $asset = Asset::factory()->create(['user_id' => $user->id]);
 
+    $this->post(route('assets.vulnerabilities.store', ['assetId' => $asset->id]), [
+        'vulnerability_id' => $vulnerability->id,
+    ])->assertOk()
+        ->assertJson([
+            'message' => 'Vulnerability attached',
+            'vulnerability_id' => $vulnerability->id,
+            'asset_id' => $asset->id,
+        ]);
+});
+
+it('receive bad request when try to attach a vulnerability already attached', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $vulnerability = Vulnerability::factory()->create();
+    $asset = Asset::factory()
+        ->hasAttached($vulnerability)
+        ->create(['user_id' => $user->id]);
+
+    $this->post(route('assets.vulnerabilities.store', ['assetId' => $asset->id]), [
+        'vulnerability_id' => $vulnerability->id,
+    ])->assertConflict()
+    ->assertJson(['message' => 'Vulnerability Already Attached']);
 });

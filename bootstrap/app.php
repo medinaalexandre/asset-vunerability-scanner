@@ -1,10 +1,13 @@
 <?php
 
+use App\Exceptions\BusinessRuleException;
+use App\Exceptions\InvalidCredentialsException;
 use App\Http\Middleware\EnsureJsonResponseMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,9 +22,28 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(function (Request $request) {
-            return $request->is('api/*') || $request->expectsJson();
-        });
+        $exceptions->dontReport([
+            BusinessRuleException::class
+        ])
+            ->shouldRenderJsonWhen(fn (Request $request) => $request->is('api/*') || $request->expectsJson())
+            ->renderable(function (Throwable $e, $request) {
+                if ($e instanceof InvalidCredentialsException) {
+                    return response()->json([
+                        'message' => $e->getMessage(),
+                    ], Response::HTTP_UNAUTHORIZED);
+                }
+
+                if ($e instanceof BusinessRuleException) {
+                    $statusCode = $e->getCode() ?? Response::HTTP_BAD_REQUEST;
+
+                    return response()->json([
+                        'message' => $e->getMessage(),
+                        'status' => 'error'
+                    ], $statusCode);
+                }
+
+                return null;
+            });
     })
     ->withProviders(
         [

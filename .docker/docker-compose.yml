@@ -10,6 +10,8 @@ services:
       DB_HOST: db
       DB_USERNAME: dev
       DB_PASSWORD: dev
+      PHP_IDE_CONFIG: "serverName=swoole"
+      XDEBUG_SESSION: "PHPSTORM"
     ports:
       - "8000:8000"
     depends_on:
@@ -17,7 +19,8 @@ services:
         condition: service_healthy
     networks:
       - asset-vulnerability-scanner-network
-
+    extra_hosts:
+      - host.docker.internal:host-gateway
   db:
     image: postgres:16-alpine
     restart: always

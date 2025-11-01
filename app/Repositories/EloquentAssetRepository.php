@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Dto\AssetDto;
+use App\Exceptions\VulnerabilityAlreadyAttachedException;
 use App\Models\Asset;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 class EloquentAssetRepository implements AssetRepositoryInterface
 {
@@ -13,6 +15,7 @@ class EloquentAssetRepository implements AssetRepositoryInterface
     {
     }
 
+    /** @return Builder<Asset> */
     protected function newQuery(): Builder
     {
         return $this->model->newQuery();
@@ -20,8 +23,7 @@ class EloquentAssetRepository implements AssetRepositoryInterface
 
     public function create(AssetDto $assetDto, int $userId): Asset
     {
-        /** @var Asset $newAsset */
-        $newAsset = $this->newQuery()->create([
+        return $this->newQuery()->create([
             'name' => $assetDto->name,
             'description' => $assetDto->description,
             'device_type' => $assetDto->deviceType,
@@ -29,8 +31,6 @@ class EloquentAssetRepository implements AssetRepositoryInterface
             'status' => $assetDto->status,
             'user_id' => $userId,
         ]);
-
-        return $newAsset;
     }
 
     public function find(int $id): ?Asset
@@ -40,6 +40,10 @@ class EloquentAssetRepository implements AssetRepositoryInterface
 
     public function attachVulnerability(int $assetId, int $vulnerabilityId): void
     {
-        $this->find($assetId)?->vulnerabilities()->attach($vulnerabilityId);
+        try {
+            $this->find($assetId)?->vulnerabilities()->attach($vulnerabilityId);
+        } catch (UniqueConstraintViolationException) {
+            throw new VulnerabilityAlreadyAttachedException;
+        }
     }
 }
