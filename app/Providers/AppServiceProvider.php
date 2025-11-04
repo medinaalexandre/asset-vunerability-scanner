@@ -8,6 +8,8 @@ use App\Repositories\Contracts\VulnerabilityRepositoryInterface;
 use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentVulnerabilityRepository;
+use App\Services\Clients\NvdGuzzleClient;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
             AssetRepositoryInterface::class,
             EloquentAssetRepository::class
         );
+
+        $this->app->singleton(NvdGuzzleClient::class, fn() => new NvdGuzzleClient([
+                'base_uri' => config('nvd.base_url')
+            ]
+        ));
     }
 
     /**
