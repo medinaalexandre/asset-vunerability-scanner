@@ -73,11 +73,11 @@ it('can attach a vulnerability to an asset', function () {
     $asset = Asset::factory()->create(['user_id' => $user->id]);
 
     $this->post(route('assets.vulnerabilities.store', ['assetId' => $asset->id]), [
-        'vulnerability_id' => $vulnerability->id,
+        'cve_id' => $vulnerability->cve_id,
     ])->assertOk()
         ->assertJson([
             'message' => 'Vulnerability attached',
-            'vulnerability_id' => $vulnerability->id,
+            'cve_id' => $vulnerability->cve_id,
             'asset_id' => $asset->id,
         ]);
 });
@@ -91,7 +91,7 @@ it('receive bad request when try to attach a vulnerability already attached', fu
         ->create(['user_id' => $user->id]);
 
     $this->post(route('assets.vulnerabilities.store', ['assetId' => $asset->id]), [
-        'vulnerability_id' => $vulnerability->id,
+        'cve_id' => $vulnerability->cve_id,
     ])->assertConflict()
     ->assertJson(['message' => 'Vulnerability Already Attached']);
 });

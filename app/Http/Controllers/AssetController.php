@@ -28,12 +28,12 @@ class AssetController extends Controller
         AttachVulnerabilityUseCase $useCase
     ): JsonResponse
     {
-        $useCase->execute($assetId, $request->getVulnerabilityId());
+        $useCase->execute($assetId, $request->getCveId());
 
         return response()->json([
             'message' => 'Vulnerability attached',
             'asset_id' => $assetId,
-            'vulnerability_id' => $request->getVulnerabilityId()
+            'cve_id' => $request->getCveId()
         ]);
     }
 }

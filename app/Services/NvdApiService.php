@@ -7,13 +7,14 @@ use App\Dto\CveDetailsMetricDto;
 use App\Exceptions\CveIdNotFoundException;
 use App\Exceptions\InvalidApiResponseException;
 use App\Services\Clients\NvdGuzzleClient;
+use App\Services\Contracts\EnrichCveDetailsServiceInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use JsonException;
 use RuntimeException;
 
-class NvdApiService
+class NvdApiService implements EnrichCveDetailsServiceInterface
 {
     public function __construct(
         protected NvdGuzzleClient $client,

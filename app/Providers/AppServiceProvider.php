@@ -9,7 +9,8 @@ use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentVulnerabilityRepository;
 use App\Services\Clients\NvdGuzzleClient;
-use GuzzleHttp\Client;
+use App\Services\Contracts\EnrichCveDetailsServiceInterface;
+use App\Services\NvdApiService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AssetRepositoryInterface::class,
             EloquentAssetRepository::class
+        );
+
+        $this->app->bind(
+            EnrichCveDetailsServiceInterface::class,
+            NvdApiService::class
         );
 
         $this->app->singleton(NvdGuzzleClient::class, fn() => new NvdGuzzleClient([
