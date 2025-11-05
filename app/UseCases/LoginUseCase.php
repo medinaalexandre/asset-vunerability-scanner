@@ -4,10 +4,8 @@ namespace App\UseCases;
 
 use App\Exceptions\InvalidCredentialsException;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\NewAccessToken;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class LoginUseCase
 {

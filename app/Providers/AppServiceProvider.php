@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\VulnerabilityDetailRepositoryInterface;
 use App\Repositories\Contracts\VulnerabilityRepositoryInterface;
 use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
+use App\Repositories\EloquentVulnerabilityDetailRepository;
 use App\Repositories\EloquentVulnerabilityRepository;
 use App\Services\Clients\NvdGuzzleClient;
 use App\Services\Contracts\EnrichCveDetailsServiceInterface;
@@ -30,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AssetRepositoryInterface::class,
             EloquentAssetRepository::class
+        );
+
+        $this->app->bind(
+            VulnerabilityDetailRepositoryInterface::class,
+            EloquentVulnerabilityDetailRepository::class,
         );
 
         $this->app->bind(
