@@ -1,11 +1,13 @@
+name: asset-vulnerability-scanner
+
 services:
   api:
     build:
-      context: ./php
+      context: docker/php
       dockerfile: Dockerfile
     user: "1000:1000"
     volumes:
-      - ../.:/var/www/html
+      - ./.:/var/www/html
     environment:
       DB_HOST: db
       DB_USERNAME: dev
@@ -22,8 +24,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - asset-vulnerability-scanner-network
     extra_hosts:
       - host.docker.internal:host-gateway
   db:
@@ -42,8 +42,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - asset-vulnerability-scanner-network
 
   nginx:
     image: nginx
@@ -52,9 +50,7 @@ services:
     depends_on:
       - api
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - asset-vulnerability-scanner-network
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
 
   clickhouse:
     image: clickhouse/clickhouse-server:latest
@@ -70,13 +66,13 @@ services:
     volumes:
       - clickhouse-data:/var/lib/clickhouse/
       - clickhouse-logs:/var/log/clickhouse-server/
-      - ./clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
-    networks:
-      - asset-vulnerability-scanner-network
+      - ./docker/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
 
-networks:
-  asset-vulnerability-scanner-network:
-    driver: bridge
+  redis:
+    image: redis:8.2.3-alpine
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres-data:

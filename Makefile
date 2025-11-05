@@ -1,14 +1,16 @@
 build:
-	docker compose -f .docker/docker-compose.yml up --build -d
+	docker compose up --build -d \
+	&& docker compose exec api composer install \
+	&& docker compose exec api php artisan migrate:fresh
 
 bash:
-	docker compose -f .docker/docker-compose.yml exec api bash
+	docker compose exec api bash
 
 restart:
-	docker compose -f .docker/docker-compose.yml restart
+	docker compose restart
 
 up:
-	docker compose -f .docker/docker-compose.yml up -d
+	docker compose up -d
 
 test:
-	docker exec -i docker-api-1 php artisan test
+	docker compose exec -i api php artisan test
