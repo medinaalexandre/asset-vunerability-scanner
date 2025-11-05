@@ -30,6 +30,7 @@ class EloquentAssetRepository implements AssetRepositoryInterface
             'location' => $assetDto->location,
             'status' => $assetDto->status,
             'user_id' => $userId,
+            'criticality_level' => $assetDto->criticalityLevel
         ]);
     }
 

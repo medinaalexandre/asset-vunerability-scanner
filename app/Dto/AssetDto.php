@@ -2,6 +2,8 @@
 
 namespace App\Dto;
 
+use App\Enums\AssetCriticalityLevelEnum;
+
 final class AssetDto
 {
     public function __construct(
@@ -9,6 +11,7 @@ final class AssetDto
         public readonly ?string $description,
         public readonly string $deviceType,
         public readonly string $location,
+        public AssetCriticalityLevelEnum $criticalityLevel,
         public string $status = ''
     ) {
     }

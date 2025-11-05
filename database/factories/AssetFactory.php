@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\AssetCriticalityLevelEnum;
 use App\Enums\VulnerabilitySeverityEnum;
 use App\Models\Asset;
 use App\Models\User;
@@ -20,7 +21,8 @@ class AssetFactory extends Factory
             'device_type' => $this->faker->safari(),
             'location' => $this->faker->city(),
             'status' => 'initial',
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
+            'criticality_level' => $this->faker->randomElement(AssetCriticalityLevelEnum::cases())
         ];
     }
 }

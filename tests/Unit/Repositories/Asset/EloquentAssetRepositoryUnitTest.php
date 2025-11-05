@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\AssetDto;
+use App\Enums\AssetCriticalityLevelEnum;
 use App\Models\Asset;
 use App\Repositories\EloquentAssetRepository;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +17,8 @@ it('can persist new asset', function () {
         description: 'foo bar',
         deviceType: 'desktop',
         location: 'Brazil',
-        status: 'active',
+        criticalityLevel: AssetCriticalityLevelEnum::LOW,
+        status: 'active'
     );
 
     $expectedData = [
@@ -24,6 +26,7 @@ it('can persist new asset', function () {
         'description' => $dto->description,
         'device_type' => $dto->deviceType,
         'location' => $dto->location,
+        'criticality_level' => $dto->criticalityLevel,
         'status' => $dto->status,
         'user_id' => 1
     ];

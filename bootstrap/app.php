@@ -45,9 +45,4 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             });
     })
-    ->withProviders(
-        [
-            L5Swagger\L5SwaggerServiceProvider::class
-        ]
-    )
     ->create();

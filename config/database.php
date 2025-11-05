@@ -113,6 +113,23 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'clickhouse' => [
+            'driver' => 'clickhouse',
+            'host' => env('CLICKHOUSE_HOST'),
+            'port' => env('CLICKHOUSE_PORT','8123'),
+            'database' => env('CLICKHOUSE_DATABASE','default'),
+            'username' => env('CLICKHOUSE_USERNAME','default'),
+            'password' => env('CLICKHOUSE_PASSWORD',''),
+            'timeout_connect' => env('CLICKHOUSE_TIMEOUT_CONNECT',2),
+            'timeout_query' => env('CLICKHOUSE_TIMEOUT_QUERY',2),
+            'https' => (bool) env('CLICKHOUSE_HTTPS', false),
+            'retries' => env('CLICKHOUSE_RETRIES', 0),
+            'settings' => [
+                'max_partitions_per_insert_block' => 300,
+            ],
+            'fix_default_query_builder' => true,
+        ],
+
     ],
 
     /*

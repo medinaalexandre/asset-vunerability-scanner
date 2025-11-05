@@ -15,7 +15,8 @@ it('can create an asset', function () {
         'name' => 'ucs-x-series-modular-systems',
         'description' => 'Cisco UCS® X-Series is designed to meet the needs of modern applications...',
         'device_type' => 'server',
-        'location' => 'Santa Maria, Brazil'
+        'location' => 'Santa Maria, Brazil',
+        'criticality_level' => 'Medium',
     ]);
 
     $res->assertCreated()
@@ -44,7 +45,8 @@ it('receive bad request if send invalid payload', function (array $payload, arra
         'payload' => [
             'description' => 'Basic server',
             'device_type' => 'server',
-            'location' => 'São Gabriel, Brazil'
+            'location' => 'São Gabriel, Brazil',
+            'criticality_level' => 'Low',
         ],
         'missingKeys' => ['name']
     ],
@@ -53,6 +55,7 @@ it('receive bad request if send invalid payload', function (array $payload, arra
             'name' => 'Windows Server',
             'description' => 'Windows Server with Office 365',
             'location' => 'London, England',
+            'criticality_level' => 'High',
         ],
         'missingKeys' => ['device_type']
     ],
@@ -61,8 +64,18 @@ it('receive bad request if send invalid payload', function (array $payload, arra
             'name' => 'Linux Server',
             'description' => 'Linux Server with Unix',
             'device_type' => 'server',
+            'criticality_level' => 'None',
         ],
         'missingKeys' => ['location']
+    ],
+    'missing criticality_level' => [
+        'payload' => [
+            'name' => 'Critical',
+            'description' => 'Critical',
+            'device_type' => 'server',
+            'location' => 'Santa Maria, Brazil',
+        ],
+        'missingKeys' => ['criticality_level']
     ]
 ]);
 

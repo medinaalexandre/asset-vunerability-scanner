@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Asset;
 
 use App\Dto\AssetDto;
+use App\Enums\AssetCriticalityLevelEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateAssetRequest extends FormRequest
 {
@@ -14,6 +16,7 @@ class CreateAssetRequest extends FormRequest
             'description' => 'nullable|string|max:4098',
             'device_type' => 'required|string|max:255',
             'location' => 'required|string|max:255',
+            'criticality_level' => ['required', Rule::enum(AssetCriticalityLevelEnum::class)],
         ];
     }
 
@@ -24,6 +27,7 @@ class CreateAssetRequest extends FormRequest
             $this->get('description'),
             $this->get('device_type'),
             $this->get('location'),
+            AssetCriticalityLevelEnum::from($this->get('criticality_level')),
         );
     }
 }

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('cve_id')->unique();
             $table->enum('severity', VulnerabilitySeverityEnum::cases())->nullable();
+            $table->float('cvss_base_score')->nullable();
             $table->text('description')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

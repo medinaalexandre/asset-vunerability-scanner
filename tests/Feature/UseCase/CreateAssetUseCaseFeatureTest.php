@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\AssetDto;
+use App\Enums\AssetCriticalityLevelEnum;
 use App\Models\Asset;
 use App\Models\User;
 use App\Repositories\EloquentAssetRepository;
@@ -12,7 +13,8 @@ it('can create an asset', function () {
         name: 'foo',
         description: null,
         deviceType: 'bar',
-        location: 'Brazil'
+        location: 'Brazil',
+        criticalityLevel: AssetCriticalityLevelEnum::CRITICAL
     );
 
     $useCase = new CreateAssetUseCase(new EloquentAssetRepository(new Asset()));
@@ -22,5 +24,6 @@ it('can create an asset', function () {
         ->name->toBe('foo')
         ->device_type->toBe('bar')
         ->location->toBe('Brazil')
-        ->status->toBe('NEED VERIFICATION');
+        ->status->toBe('NEED VERIFICATION')
+        ->criticality_level->toBe(AssetCriticalityLevelEnum::CRITICAL);
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\AssetDto;
+use App\Enums\AssetCriticalityLevelEnum;
 use App\Models\Asset;
 use App\Models\User;
 use App\Repositories\EloquentAssetRepository;
@@ -16,7 +17,14 @@ it('can create an asset', function () {
 
     $useCase = new CreateAssetUseCase($repositoryMock);
 
+    $assetDto = new AssetDto(
+        'foo',
+        'bar',
+        'device',
+        'brazil',
+        AssetCriticalityLevelEnum::NONE
+    );
     expect(
-        $useCase->execute(new AssetDto('foo', 'bar', 'device', 'brazil'), $loggedUser)
+        $useCase->execute($assetDto, $loggedUser)
     )->toBe($createdAsset);
 });

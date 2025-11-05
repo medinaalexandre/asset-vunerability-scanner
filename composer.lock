@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b9c1055f74417fcbf515c7cdfc7fb65",
+    "content-hash": "075ef024f7a3ef2d5c88ef9524105125",
     "packages": [
         {
             "name": "brick/math",
@@ -737,6 +737,174 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "glushkovds/clickhouse-builder",
+            "version": "6.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glushkovds/ClickhouseBuilder.git",
+                "reference": "cbc032470499dde0801c402547d13b6430950796"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glushkovds/ClickhouseBuilder/zipball/cbc032470499dde0801c402547d13b6430950796",
+                "reference": "cbc032470499dde0801c402547d13b6430950796",
+                "shasum": ""
+            },
+            "require": {
+                "myclabs/php-enum": "^1.5",
+                "php": "^7.1|^8.0",
+                "the-tinderbox/clickhouse-php-client": "^3.0"
+            },
+            "require-dev": {
+                "illuminate/config": "5.*",
+                "illuminate/database": "5.*",
+                "illuminate/events": "5.*",
+                "illuminate/pagination": "5.*",
+                "mockery/mockery": "^0.9.9|^1.4",
+                "phpunit/phpunit": "^6.1|^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Tinderbox\\ClickhouseBuilder\\Integrations\\Laravel\\ClickhouseServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Tinderbox\\ClickhouseBuilder\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "FacedSID",
+                    "email": "ay@imagespark.ru"
+                },
+                {
+                    "name": "Evsign",
+                    "email": "evsign.alex@gmail.com"
+                }
+            ],
+            "description": "Clickhouse sql query builder",
+            "support": {
+                "source": "https://github.com/glushkovds/ClickhouseBuilder/tree/6.1.2"
+            },
+            "time": "2025-06-26T14:47:13+00:00"
+        },
+        {
+            "name": "glushkovds/php-clickhouse-schema-builder",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glushkovds/php-clickhouse-schema-builder.git",
+                "reference": "1f8387aaa1369fbd488d9f6a33f3a17f64c9e1b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glushkovds/php-clickhouse-schema-builder/zipball/1f8387aaa1369fbd488d9f6a33f3a17f64c9e1b3",
+                "reference": "1f8387aaa1369fbd488d9f6a33f3a17f64c9e1b3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpClickHouseSchemaBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denis Glushkov",
+                    "email": "amkarovec@gmail.com",
+                    "homepage": "https://github.com/glushkovds"
+                }
+            ],
+            "description": "PHP library for generating DDL statements for ClickHouse",
+            "homepage": "https://github.com/glushkovds/php-clickhouse-schema-builder",
+            "keywords": [
+                "builder",
+                "clickhouse",
+                "ddl",
+                "php",
+                "schema"
+            ],
+            "support": {
+                "issues": "https://github.com/glushkovds/php-clickhouse-schema-builder/issues",
+                "source": "https://github.com/glushkovds/php-clickhouse-schema-builder/tree/v1.1.1"
+            },
+            "time": "2025-06-16T07:27:39+00:00"
+        },
+        {
+            "name": "glushkovds/phpclickhouse-laravel",
+            "version": "v2.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glushkovds/phpclickhouse-laravel.git",
+                "reference": "215416e732604c029bc5d3082212046c6bfd5366"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glushkovds/phpclickhouse-laravel/zipball/215416e732604c029bc5d3082212046c6bfd5366",
+                "reference": "215416e732604c029bc5d3082212046c6bfd5366",
+                "shasum": ""
+            },
+            "require": {
+                "glushkovds/clickhouse-builder": "^6.1.2",
+                "glushkovds/php-clickhouse-schema-builder": "^1.0.2",
+                "illuminate/database": ">=7",
+                "illuminate/support": ">=7",
+                "php": ">=8.0",
+                "smi2/phpclickhouse": "^1.4.2"
+            },
+            "require-dev": {
+                "laravel/framework": ">=9",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpClickHouseLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denis Glushkov",
+                    "email": "amkarovec@gmail.com",
+                    "homepage": "https://github.com/glushkovds"
+                }
+            ],
+            "description": "Adapter of the most popular library https://github.com/smi2/phpClickHouse to Laravel",
+            "homepage": "https://github.com/glushkovds/phpClickHouse-laravel",
+            "keywords": [
+                "clickhouse",
+                "laravel",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/glushkovds/phpclickhouse-laravel/issues",
+                "source": "https://github.com/glushkovds/phpclickhouse-laravel/tree/v2.3.4"
+            },
+            "time": "2025-06-27T10:04:15+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -2513,6 +2681,69 @@
             "time": "2025-03-24T10:02:05+00:00"
         },
         {
+            "name": "myclabs/php-enum",
+            "version": "1.8.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/php-enum.git",
+                "reference": "e7be26966b7398204a234f8673fdad5ac6277802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/e7be26966b7398204a234f8673fdad5ac6277802",
+                "reference": "e7be26966b7398204a234f8673fdad5ac6277802",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "1.*",
+                "vimeo/psalm": "^4.6.2 || ^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyCLabs\\Enum\\": "src/"
+                },
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP Enum contributors",
+                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
+                }
+            ],
+            "description": "PHP Enum implementation",
+            "homepage": "https://github.com/myclabs/php-enum",
+            "keywords": [
+                "enum"
+            ],
+            "support": {
+                "issues": "https://github.com/myclabs/php-enum/issues",
+                "source": "https://github.com/myclabs/php-enum/tree/1.8.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/php-enum",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-01-14T11:49:03+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "3.10.3",
             "source": {
@@ -3772,6 +4003,65 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.1"
             },
             "time": "2025-09-04T20:59:21+00:00"
+        },
+        {
+            "name": "smi2/phpclickhouse",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smi2/phpClickHouse.git",
+                "reference": "f79dfb798df96185beff90891efda997b01eb51b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smi2/phpClickHouse/zipball/f79dfb798df96185beff90891efda997b01eb51b",
+                "reference": "f79dfb798df96185beff90891efda997b01eb51b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^8.2",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.5",
+                "sebastian/comparator": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ClickHouseDB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Strykhar",
+                    "email": "isublimity@gmail.com",
+                    "homepage": "https://github.com/isublimity"
+                }
+            ],
+            "description": "PHP ClickHouse Client",
+            "homepage": "https://github.com/smi2/phpClickHouse",
+            "keywords": [
+                "clickhouse",
+                "client",
+                "curl",
+                "driver",
+                "http",
+                "http client",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/smi2/phpClickHouse/issues",
+                "source": "https://github.com/smi2/phpClickHouse/tree/1.6.0"
+            },
+            "time": "2025-01-15T07:04:59+00:00"
         },
         {
             "name": "swagger-api/swagger-ui",
@@ -6469,6 +6759,54 @@
                 }
             ],
             "time": "2025-09-27T09:00:46+00:00"
+        },
+        {
+            "name": "the-tinderbox/clickhouse-php-client",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/the-tinderbox/ClickhouseClient.git",
+                "reference": "25c4e918bd30fb181add4c8db46e6d5aba510bf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/the-tinderbox/ClickhouseClient/zipball/25c4e918bd30fb181add4c8db46e6d5aba510bf0",
+                "reference": "25c4e918bd30fb181add4c8db46e6d5aba510bf0",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9|^1.4",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpcov": "^5.0|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "bin": [
+                "bin/ccat_linux",
+                "bin/ccat_darwin"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tinderbox\\Clickhouse\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "FacedSID",
+                    "email": "ay@imagespark.ru"
+                }
+            ],
+            "description": "Clickhouse client over HTTP",
+            "support": {
+                "issues": "https://github.com/the-tinderbox/ClickhouseClient/issues",
+                "source": "https://github.com/the-tinderbox/ClickhouseClient/tree/3.1.0"
+            },
+            "time": "2021-04-23T18:56:33+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -10203,12 +10541,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

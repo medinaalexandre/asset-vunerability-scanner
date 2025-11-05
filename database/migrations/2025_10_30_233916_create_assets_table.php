@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('status');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('criticality_level');
             $table->timestamps();
 
             $table->index(['user_id', 'name']);

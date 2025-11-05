@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\AssetDto;
+use App\Enums\AssetCriticalityLevelEnum;
 use App\Models\Asset;
 use App\Models\User;
 use App\Repositories\EloquentAssetRepository;
@@ -12,7 +13,8 @@ it('can create asset', function () {
         description: 'foo bar',
         deviceType: 'desktop',
         location: 'Brazil',
-        status: 'active',
+        criticalityLevel: AssetCriticalityLevelEnum::HIGH,
+        status: 'active'
     );
 
     $user = User::factory()->create();
@@ -26,7 +28,8 @@ it('can create asset', function () {
         ->name->toBe($dto->name)
         ->description->toBe($dto->description)
         ->location->toBe($dto->location)
-        ->status->toBe($dto->status);
+        ->status->toBe($dto->status)
+        ->criticality_level->toBe($dto->criticalityLevel);
 
     $this->assertDatabaseHas('assets', ['id' => $createdAsset->id]);
 });
