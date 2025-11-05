@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Clients\NvdGuzzleClient;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\VulnerabilityDetailRepositoryInterface;
@@ -10,7 +11,6 @@ use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentVulnerabilityDetailRepository;
 use App\Repositories\EloquentVulnerabilityRepository;
-use App\Services\Clients\NvdGuzzleClient;
 use App\Services\Contracts\EnrichCveDetailsServiceInterface;
 use App\Services\NvdApiService;
 use Illuminate\Support\ServiceProvider;

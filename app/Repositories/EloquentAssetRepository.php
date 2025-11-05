@@ -23,15 +23,7 @@ class EloquentAssetRepository implements AssetRepositoryInterface
 
     public function create(AssetDto $assetDto, int $userId): Asset
     {
-        return $this->newQuery()->create([
-            'name' => $assetDto->name,
-            'description' => $assetDto->description,
-            'device_type' => $assetDto->deviceType,
-            'location' => $assetDto->location,
-            'status' => $assetDto->status,
-            'user_id' => $userId,
-            'criticality_level' => $assetDto->criticalityLevel
-        ]);
+        return $this->newQuery()->create($this->dtoToArrayUpsertData($assetDto, $userId));
     }
 
     public function find(int $id): ?Asset
@@ -46,5 +38,38 @@ class EloquentAssetRepository implements AssetRepositoryInterface
         } catch (UniqueConstraintViolationException) {
             throw new VulnerabilityAlreadyAttachedException;
         }
+    }
+
+    public function detachVulnerability(int $assetId, int $vulnerabilityId): void
+    {
+        $this->find($assetId)?->vulnerabilities()->detach($vulnerabilityId);
+    }
+
+    public function findByUser(int $id, int $userId): ?Asset
+    {
+        return $this->newQuery()->where('user_id', $userId)->where('id', $id)->first();
+    }
+
+    public function delete(int $assetId): void
+    {
+        $this->newQuery()->where('id', $assetId)->delete();
+    }
+
+    public function update(int $assetId, AssetDto $assetDto): void
+    {
+        $this->newQuery()->update($this->dtoToArrayUpsertData($assetDto));
+    }
+
+    protected function dtoToArrayUpsertData(AssetDto $assetDto, ?int $userId = null): array
+    {
+        return array_filter([
+            'name' => $assetDto->name,
+            'description' => $assetDto->description,
+            'device_type' => $assetDto->deviceType,
+            'location' => $assetDto->location,
+            'status' => $assetDto->status,
+            'user_id' => $userId,
+            'criticality_level' => $assetDto->criticalityLevel
+        ]);
     }
 }

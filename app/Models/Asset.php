@@ -55,6 +55,11 @@ class Asset extends Model
         'criticality_level' => AssetCriticalityLevelEnum::class,
     ];
 
+    protected $hidden = [
+        'user_id',
+        'deleted_at'
+    ];
+
     protected $fillable = [
         'name',
         'description',

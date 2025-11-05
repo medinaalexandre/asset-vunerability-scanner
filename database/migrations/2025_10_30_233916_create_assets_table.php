@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('criticality_level');
             $table->timestamps();
 
-            $table->index(['user_id', 'name']);
+            $table->index(['id', 'user_id']);
             $table->softDeletes();
         });
     }

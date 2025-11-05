@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Clients\NvdGuzzleClient;
 use App\Dto\CveDetailsDto;
 use App\Dto\CveDetailsMetricDto;
 use App\Exceptions\CveIdNotFoundException;
 use App\Exceptions\InvalidApiResponseException;
-use App\Services\Clients\NvdGuzzleClient;
 use App\Services\Contracts\EnrichCveDetailsServiceInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -56,12 +56,12 @@ class NvdApiService implements EnrichCveDetailsServiceInterface
 
     protected function mapToCveDetailsDto(array $responseData): CveDetailsDto
     {
-        $cveData = $responseData['vulnerabilities'][0]['cve'];
+        $cveData = data_get($responseData, 'vulnerabilities.0.cve');
         $description = collect($cveData['descriptions'] ?? [])
             ->sortBy(fn (array $item) => $item['lang'] !== 'en')
             ->first()['value'] ?? null;
 
-        $cweId = collect($cveData['weaknesses'][0]['description'] ?? [])
+        $cweId = collect(data_get($cveData, 'weaknesses.0.description') ?? [])
             ->sortBy(fn (array $item) => $item['lang'] !== 'en')
             ->first()['value'] ?? null;
 
@@ -89,7 +89,7 @@ class NvdApiService implements EnrichCveDetailsServiceInterface
             ->toArray();
 
         return new CveDetailsDto(
-            id: $cveData['id'],
+            id: $cveData['id'] ?? null,
             sourceIdentifier: $cveData['sourceIdentifier'] ?? null,
             publishedAt: $cveData['published'] ?? null,
             lastModifiedAt: $cveData['lastModified'] ?? null,

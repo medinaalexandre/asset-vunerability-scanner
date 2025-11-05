@@ -3,6 +3,7 @@
 use App\Exceptions\BusinessRuleException;
 use App\Exceptions\InvalidCredentialsException;
 use App\Http\Middleware\EnsureJsonResponseMiddleware;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -40,6 +41,12 @@ return Application::configure(basePath: dirname(__DIR__))
                         'message' => $e->getMessage(),
                         'status' => 'error'
                     ], $statusCode);
+                }
+
+                if ($e instanceof ModelNotFoundException) {
+                    return response()->json([
+                        'message' => $e->getMessage(),
+                    ], Response::HTTP_NOT_FOUND);
                 }
 
                 return null;

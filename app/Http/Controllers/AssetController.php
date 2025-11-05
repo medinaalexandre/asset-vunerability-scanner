@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Asset\AttachVulnerabilityRequest;
+use App\Http\Requests\Asset\AttachOrDetachVulnerabilityRequest;
 use App\Http\Requests\Asset\CreateAssetRequest;
+use App\Http\Requests\Asset\UpdateAssetRequest;
 use App\Models\User;
 use App\UseCases\Asset\AttachVulnerabilityUseCase;
 use App\UseCases\Asset\CreateAssetUseCase;
+use App\UseCases\Asset\DeleteAssetUseCase;
+use App\UseCases\Asset\RiskCalculateUseCase;
+use App\UseCases\Asset\ShowAssetUseCase;
+use App\UseCases\Asset\UpdateAssetUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +29,7 @@ class AssetController extends Controller
 
     public function attachVulnerability(
         int $assetId,
-        AttachVulnerabilityRequest $request,
+        AttachOrDetachVulnerabilityRequest $request,
         AttachVulnerabilityUseCase $useCase
     ): JsonResponse
     {
@@ -35,5 +40,43 @@ class AssetController extends Controller
             'asset_id' => $assetId,
             'cve_id' => $request->getCveId()
         ]);
+    }
+
+    public function detachVulnerability(
+        int $assetId,
+        AttachOrDetachVulnerabilityRequest $request,
+        AttachVulnerabilityUseCase $useCase
+    ): JsonResponse
+    {
+        $useCase->execute($assetId, $request->getCveId());
+
+        return response()->json([
+            'message' => 'Vulnerability attached',
+            'asset_id' => $assetId,
+            'cve_id' => $request->getCveId()
+        ]);
+    }
+
+    public function update(int $assetId, UpdateAssetRequest $request, UpdateAssetUseCase $useCase): JsonResponse
+    {
+        return response()->json(
+            $useCase->execute($assetId, Auth::user()->id, $request->getAssetDto())
+        );
+    }
+
+    public function show(int $assetId, ShowAssetUseCase $useCase): JsonResponse
+    {
+        return response()->json($useCase->execute($assetId, Auth::user()->id));
+    }
+
+    public function delete(int $assetId, DeleteAssetUseCase $useCase): JsonResponse
+    {
+        $useCase->execute($assetId, Auth::user()->id);
+        return response()->json(status: Response::HTTP_NO_CONTENT);
+    }
+
+    public function calculateRisk(int $assetId, RiskCalculateUseCase $useCase): JsonResponse
+    {
+        return response()->json($useCase->execute($assetId));
     }
 }

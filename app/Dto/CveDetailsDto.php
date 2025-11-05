@@ -9,7 +9,7 @@ readonly class CveDetailsDto
      * @param array<string> $references
      */
     public function __construct(
-        public string $id,
+        public ?string $id,
         public ?string $sourceIdentifier,
         public ?string $publishedAt,
         public ?string $lastModifiedAt,

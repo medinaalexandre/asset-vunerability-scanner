@@ -10,8 +10,16 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::prefix('assets')->name('assets.')->group(function () {
         Route::post('/', [AssetController::class, 'create'])->name('create');
-        Route::post('/{assetId}/vulnerabilities', [AssetController::class, 'attachVulnerability'])
-            ->name('vulnerabilities.store');
+        Route::prefix('/{assetId}')->group(function () {
+            Route::get('/', [AssetController::class, 'show'])->name('show');
+            Route::patch('/', [AssetController::class, 'update'])->name('update');
+            Route::delete('/', [AssetController::class, 'delete'])->name('delete');
+            Route::get('/risk', [AssetController::class, 'calculateRisk'])->name('calculate-risk');
+            Route::post('/vulnerabilities', [AssetController::class, 'attachVulnerability'])
+                ->name('vulnerabilities.store');
+            Route::delete('/vulnerabilities/{cveId}', [AssetController::class, 'detachVulnerability'])
+                ->name('vulnerabilities.store');
+        });
     });
 
     Route::prefix('vulnerabilities')->name('vulnerabilities.')->group(function () {

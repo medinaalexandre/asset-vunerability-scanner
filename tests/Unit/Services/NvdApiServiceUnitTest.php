@@ -2,10 +2,10 @@
 
 mutates(NvdApiService::class);
 
+use App\Clients\NvdGuzzleClient;
 use App\Dto\CveDetailsDto;
 use App\Exceptions\CveIdNotFoundException;
 use App\Exceptions\InvalidApiResponseException;
-use App\Services\Clients\NvdGuzzleClient;
 use App\Services\NvdApiService;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
