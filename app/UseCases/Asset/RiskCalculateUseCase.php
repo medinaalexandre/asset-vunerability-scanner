@@ -4,7 +4,7 @@ namespace App\UseCases\Asset;
 
 use App\Dto\CalculatedAssetRisk;
 use App\Repositories\Contracts\AssetRepositoryInterface;
-use App\Repositories\VulnerabilityFactsRepository;
+use App\Repositories\Contracts\VulnerabilityFactsRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -16,7 +16,7 @@ class RiskCalculateUseCase
 
     public function __construct(
         protected readonly AssetRepositoryInterface $assetRepository,
-        protected readonly VulnerabilityFactsRepository $vulnerabilityFactsRepository,
+        protected readonly VulnerabilityFactsRepositoryInterface $vulnerabilityFactsRepository,
     ) {
     }
 

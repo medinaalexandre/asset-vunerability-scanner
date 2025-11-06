@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Clients\NvdGuzzleClient;
+use App\Repositories\ClickHouseVulnerabilityFactsRepository;
 use App\Repositories\Contracts\AssetRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\VulnerabilityDetailRepositoryInterface;
+use App\Repositories\Contracts\VulnerabilityFactsRepositoryInterface;
 use App\Repositories\Contracts\VulnerabilityRepositoryInterface;
 use App\Repositories\EloquentAssetRepository;
 use App\Repositories\EloquentUserRepository;
@@ -40,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             VulnerabilityDetailRepositoryInterface::class,
             EloquentVulnerabilityDetailRepository::class,
+        );
+
+        $this->app->bind(
+            VulnerabilityFactsRepositoryInterface::class,
+            ClickHouseVulnerabilityFactsRepository::class
         );
 
         $this->app->bind(
