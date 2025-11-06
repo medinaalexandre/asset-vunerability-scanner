@@ -37,7 +37,7 @@ class AssetController extends Controller
         AttachVulnerabilityUseCase $useCase
     ): JsonResponse
     {
-        $useCase->execute($assetId, $request->getCveId());
+        $useCase->execute($assetId, $request->getCveId(), Auth::user()->id);
 
         return response()->json([
             'message' => 'Vulnerability attached',
@@ -53,7 +53,7 @@ class AssetController extends Controller
         AttachVulnerabilityUseCase $useCase
     ): JsonResponse
     {
-        $useCase->execute($assetId, $request->getCveId());
+        $useCase->execute($assetId, $request->getCveId(), Auth::user()->id);
 
         return response()->json([
             'message' => 'Vulnerability detached',
@@ -86,7 +86,7 @@ class AssetController extends Controller
     /** @operationId Calculate Risk */
     public function calculateRisk(int $assetId, RiskCalculateUseCase $useCase): JsonResponse
     {
-        $data = $useCase->execute($assetId);
+        $data = $useCase->execute($assetId, Auth::user()->id);
         return response()->json([
             'asset_id' => $assetId,
             'calculated_risk' => $data->calculatedRisk,

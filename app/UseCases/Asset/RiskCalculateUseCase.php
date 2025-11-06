@@ -20,9 +20,9 @@ class RiskCalculateUseCase
     ) {
     }
 
-    public function execute(int $assetId): CalculatedAssetRisk
+    public function execute(int $assetId, int $userId): CalculatedAssetRisk
     {
-        $asset = $this->assetRepository->find($assetId);
+        $asset = $this->assetRepository->findByUser($assetId, $userId);
 
         if (is_null($asset)) {
             throw new ModelNotFoundException("Asset not found");
