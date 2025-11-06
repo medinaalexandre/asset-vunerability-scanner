@@ -7,6 +7,7 @@ use App\Dto\CveDetailsDto;
 use App\Dto\CveDetailsMetricDto;
 use App\Exceptions\CveIdNotFoundException;
 use App\Exceptions\InvalidApiResponseException;
+use App\Helpers\DatadogCollectMetricHelper;
 use App\Services\Contracts\EnrichCveDetailsServiceInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -29,11 +30,15 @@ class NvdApiService implements EnrichCveDetailsServiceInterface
     public function getDetails(string $cveId): CveDetailsDto
     {
         try {
+            $startTime = microtime(true);
+
             $response = $this->client->get('cves/2.0', [
                 RequestOptions::QUERY => [
                     'cveId' => $cveId,
                 ]
             ]);
+
+            DatadogCollectMetricHelper::registerTimeSpent('nvd_api_cves_2.0', $startTime);
 
             $contents = $response->getBody()->getContents();
             $responseData = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);

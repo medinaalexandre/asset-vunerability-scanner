@@ -19,6 +19,8 @@ services:
       CLICKHOUSE_DATABASE: default
       CLICKHOUSE_USERNAME: dev
       CLICKHOUSE_PASSWORD: dev
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "php", "service": "asset-vulnerability-api"}]'
     ports:
       - "8000:8000"
     depends_on:
@@ -73,6 +75,35 @@ services:
     restart: always
     ports:
       - "6379:6379"
+
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    hostname: dd-agent
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      DD_SITE: ${DD_SITE}
+      DD_HOSTNAME: dd-agent-local
+      DD_ENV: "dev"
+      DD_APM_ENABLED: "true"
+      DD_APM_NON_LOCAL_TRAFFIC: "true"
+      DD_PROFILING_ENABLED: "auto"
+      DD_IAST_ENABLED: "true"
+      DD_APPSEC_SCA_ENABLED: "true"
+      DD_LOGS_ENABLED: "true"
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+      DD_APM_RECEIVER_SOCKET: "/var/run/datadog/apm.socket"
+      DD_DOGSTATSD_SOCKET: "/var/run/datadog/dsd.socket"
+      DD_DOGSTATSD_METRICS_STATS_ENABLE: "true"
+      DD_DOGSTATSD_TCP_ENABLED: "true"
+    ports:
+      - "8126:8126/udp"
+      - "8125:8125/udp"
+    volumes:
+      - /var/run/datadog:/var/run/datadog
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
 
 volumes:
   postgres-data:

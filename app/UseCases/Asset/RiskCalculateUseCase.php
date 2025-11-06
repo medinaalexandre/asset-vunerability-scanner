@@ -28,7 +28,7 @@ class RiskCalculateUseCase
             throw new ModelNotFoundException("Asset not found");
         }
 
-        $result = $this->vulnerabilityFactsRepository->getCalculatedRiskyForAsset($assetId);
+        $result = $this->vulnerabilityFactsRepository->getCalculatedRiskForAsset($assetId);
 
         return new CalculatedAssetRisk(
             assetId: $result->assetId,

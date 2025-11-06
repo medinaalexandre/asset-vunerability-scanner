@@ -1,5 +1,7 @@
 <?php
 
+use App\Logging\DatadogJsonLogger;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -54,8 +56,14 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
+            'channels' => explode(',', (string) env('LOG_STACK', ['single', 'datadog_json'])),
             'ignore_exceptions' => false,
+        ],
+
+        'datadog_json' => [
+            'driver' => 'custom',
+            'via' => DatadogJsonLogger::class,
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'single' => [

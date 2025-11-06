@@ -3,12 +3,14 @@
 use App\Exceptions\BusinessRuleException;
 use App\Exceptions\InvalidCredentialsException;
 use App\Http\Middleware\EnsureJsonResponseMiddleware;
+use ChaseConey\LaravelDatadogHelper\Middleware\LaravelDatadogMiddleware;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,7 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->append(EnsureJsonResponseMiddleware::class);
+        $middleware->append([
+            EnsureJsonResponseMiddleware::class,
+            LaravelDatadogMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->dontReport([
@@ -41,7 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     ], $statusCode);
                 }
 
-                if ($e instanceof ModelNotFoundException) {
+                if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
                     return response()->json([
                         'message' => $e->getMessage(),
                     ], Response::HTTP_NOT_FOUND);

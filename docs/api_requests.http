@@ -28,7 +28,7 @@ Content-Type: application/json
 Authorization: Bearer {{bearer_token}}
 
 {
-    "cve_id": "CVE-2025-10004/"
+    "cve_id": "CVE-2025-10035"
 }
 
 ###
