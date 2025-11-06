@@ -1,59 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Asset Vulnerability Scanner
+--
+This API is designed to assist users in managing their assets and linking them to known security vulnerabilities,
+providing calculated risk scores and detailed security intelligence.
+Once a vulnerability is register by your [Common Vulnerabilities and Exposures Identifier (CVE-ID)](https://www.cve.org/) on our database, our system automatically find the
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Key Features
+- Asset Management (CRUD): Full management capabilities for user assets (servers, software, devices).
+- Vulnerability Linking: Allows users to associate known vulnerabilities via their [Common Vulnerabilities and Exposures Identifier (CVE-ID)](https://www.cve.org/) with specific assets.
+- Automated Enrichment: Upon registration, the system automatically fetches and saves vulnerability details from [NVD CVE API](https://nvd.nist.gov/developers/vulnerabilities).
+- Risk Calculation: Aggregated risk scores are calculated based on the asset's intrinsic criticality and the [Common Vulnerability Scoring System(CVSS)](https://nvd.nist.gov/vuln-metrics/cvss) scores of associated CVEs.
 
-## About Laravel
+## Running Locally with Docker
+If you have Make installed on your system, the setup is straightforward:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. **Build and Start:** Run `make build` in the root directory.
+   - Note: This command handles building containers, installing Composer dependencies, and running initial migrations.
+2. **Access:** The API will be available on port 8000. You can access the API documentation at:
+   - http://localhost/docs/api/
+3. **Run Requests:** The API includes pre-defined requests for testing, available at [docs.](docs)
+   - The [Postman Collection](https://www.postman.com/product/collections/) is available at
+[docs/api_requests.postman_collection.json](docs/api_requests.postman_collection.json)
+   - The [PhpStorm/IntelliJ Collection](https://www.jetbrains.com/help/phpstorm/http-client-in-product-code-editor.html)
+is available at [docs/api_requests.http](docs/api_requests.http)
+4. **Run tests**: The api include Unit Tests and Feature tests, you can check it running `make test` in the root
+directory.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## API Architecture and Design
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The API was built leveraging the principles of **Clean Architecture** and **SOLID**, focusing on maintainability,
+testability, and clear separation of concerns.
 
-## Learning Laravel
+### Decoupling and Inversion of Control (IoC)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* **Clean Architecture Base:** Business logic is primarily isolated within **Use Cases** (Application Layer). The design
+rigorously adheres to the **Single Responsibility Principle (SRP)**, ensuring **each Use Case has only one objective**.
+* **Dependency Inversion (DIP):** The design adheres to SOLID principles, notably the **Dependency Inversion Principle**,
+by programming against abstractions (Interfaces) rather than concrete implementations (e.g., Repositories, API Clients).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Robustness and Asynchronous Processing (Event-Driven)
 
-## Laravel Sponsors
+The system utilizes an **Event-Driven Architecture (EDA)** to increase the **robustness** and **speed** of the API:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **Delegation via Events:** Instead of synchronous calls, secondary actions (like sending facts to
+[ClickHouse](https://clickhouse.com/) or fetching external API data)
+are **delegated to an Event Queue**. This keeps the primary Use Case fast and isolated.
+  - Example: [RecordVulnerabilityFact](app/Listeners/RecordVulnerabilityFact.php) and
+[RecordAssetVulnerabilityFact](app/Listeners/RecordAssetVulnerabilityFact.php)
+* **Messaging System:** The system uses Laravel's event/queue system, utilizing [Redis](https://redis.io/) as the
+message broker.
+* **Background Jobs:** Network-intensive tasks, such as accessing the external NVD API for vulnerability enrichment,
+and the process of sending analytical facts to **ClickHouse**, are executed in *background jobs*.
+    - Example: [StartVulnerabilityEnrichment.php](app/Listeners/StartVulnerabilityEnrichment.php)
+* **Benefit:** This approach significantly reduces latency for the end-user, ensuring a near-instantaneous response for
+resource creation.

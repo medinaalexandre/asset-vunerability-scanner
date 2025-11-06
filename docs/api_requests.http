@@ -1,0 +1,62 @@
+###
+POST http://localhost/api/login
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "password"
+}
+
+> {% client.global.set("bearer_token", response.body.token); %}
+
+###
+POST http://localhost/api/v1/assets/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+    "name": "Windows Server",
+    "description": "With office 365",
+    "device_type": "Server",
+    "location": "Santa Maria",
+    "criticality_level": "Medium"
+}
+
+###
+POST http://localhost/api/v1/vulnerabilities/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+    "cve_id": "CVE-2025-10004/"
+}
+
+###
+POST http://localhost/api/v1/assets/1/vulnerabilities/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+    "cve_id": "CVE-2025-10004"
+}
+
+###
+GET http://localhost/api/v1/assets/1/risk
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+
+### Show
+GET http://localhost/api/v1/assets/1
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+
+### Update
+PATCH http://localhost/api/v1/assets/1
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+    "name": "Windows Server Edited"
+}
